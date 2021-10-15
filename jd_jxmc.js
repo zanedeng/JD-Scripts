@@ -354,10 +354,10 @@ var shareCodesHbInterval = [], shareCodesHb = [], shareCodesHb_HW = [];
                 return [3 /*break*/, 3];
             case 69:
                 _d.trys.push([69, 71, , 72]);
-                return [4 /*yield*/, axios_1["default"].get('${$.isNode() ? require('. / USER_AGENTS, ').hwApi : ', https, //api.jdsharecode.xyz/api/'}HW_CODES', {timeout: 10000})
-                    shareCodesHb_HW = data['jxmchb'] || [])];
+                return [4 /*yield*/, axios_1["default"].get(require('./USER_AGENTS').hwApi + "HW_CODES", { timeout: 10000 })];
             case 70:
                 data = (_d.sent()).data;
+                shareCodesHb_HW = data['jxmchb'] || [];
                 return [3 /*break*/, 72];
             case 71:
                 e_6 = _d.sent();
@@ -370,10 +370,11 @@ var shareCodesHbInterval = [], shareCodesHb = [], shareCodesHb_HW = [];
                 _d.label = 74;
             case 74:
                 _d.trys.push([74, 76, , 77]);
-                return [4 /*yield*/, axios_1["default"].get('${$.isNode() ? require('. / USER_AGENTS, ').hwApi : ', https, //api.jdsharecode.xyz/api/'}jxmchb/20', {timeout: 10000})
-                    console.log('获取到20个随机红包码:', data.data), shareCodesHb = __spreadArray(__spreadArray(__spreadArray([], shareCodesHbInterval, true), shareCodesHb_HW, true), data.data, true))];
+                return [4 /*yield*/, axios_1["default"].get(require('./USER_AGENTS').hwApi + "jxmchb/20", { timeout: 10000 })];
             case 75:
                 data = (_d.sent()).data;
+                console.log('获取到20个随机红包码:', data.data);
+                shareCodesHb = __spreadArray(__spreadArray(__spreadArray([], shareCodesHbInterval, true), shareCodesHb_HW, true), data.data, true);
                 return [3 /*break*/, 77];
             case 76:
                 e_7 = _d.sent();
@@ -419,10 +420,11 @@ var shareCodesHbInterval = [], shareCodesHb = [], shareCodesHb_HW = [];
                 _d.label = 86;
             case 86:
                 _d.trys.push([86, 88, , 89]);
-                return [4 /*yield*/, axios_1["default"].get('${$.isNode() ? require('. / USER_AGENTS, ').hwApi : ', https, //api.jdsharecode.xyz/api/'}jxmc/30', {timeout: 10000})
-                    console.log('获取到30个随机助力码:', data.data), shareCodes = __spreadArray(__spreadArray([], shareCodes, true), data.data, true))];
+                return [4 /*yield*/, axios_1["default"].get(require('./USER_AGENTS').hwApi + "jxmc/30", { timeout: 10000 })];
             case 87:
                 data = (_d.sent()).data;
+                console.log('获取到30个随机助力码:', data.data);
+                shareCodes = __spreadArray(__spreadArray([], shareCodes, true), data.data, true);
                 return [3 /*break*/, 89];
             case 88:
                 e_8 = _d.sent();
@@ -565,7 +567,7 @@ function makeShareCodes(code) {
                     farm = _a.sent();
                     pin = cookie.match(/pt_pin=([^;]*)/)[1];
                     pin = ts_md5_1.Md5.hashStr(pin);
-                    return [4 /*yield*/, axios_1["default"].get(($.isNode() ? require('./USER_AGENTS').hwApi : 'https://api.jdsharecode.xyz/api/') + "autoInsert/jxmc?sharecode=" + code + "&bean=" + bean + "&farm=" + farm + "&pin=" + pin, { timeout: 10000 })
+                    return [4 /*yield*/, axios_1["default"].get(require('./USER_AGENTS').hwApi + "autoInsert/jxmc?sharecode=" + code + "&bean=" + bean + "&farm=" + farm + "&pin=" + pin, { timeout: 10000 })
                             .then(function (res) {
                             if (res.data.code === 200)
                                 console.log('已自动提交助力码');
@@ -596,7 +598,7 @@ function makeShareCodesHb(code) {
                     farm = _a.sent();
                     pin = cookie.match(/pt_pin=([^;]*)/)[1];
                     pin = ts_md5_1.Md5.hashStr(pin);
-                    return [4 /*yield*/, axios_1["default"].get(($.isNode() ? require('./USER_AGENTS').hwApi : 'https://api.jdsharecode.xyz/api/') + "autoInsert/jxmchb?sharecode=" + code + "&bean=" + bean + "&farm=" + farm + "&pin=" + pin, { timeout: 10000 })
+                    return [4 /*yield*/, axios_1["default"].get(require('./USER_AGENTS').hwApi + "autoInsert/jxmchb?sharecode=" + code + "&bean=" + bean + "&farm=" + farm + "&pin=" + pin, { timeout: 10000 })
                             .then(function (res) {
                             if (res.data.code === 200)
                                 console.log('已自动提交红包码');

@@ -53,18 +53,26 @@ exports.__esModule = true;
 var TS_USER_AGENTS_1 = require("./TS_USER_AGENTS");
 var axios_1 = require("axios");
 var path = require("path");
+var fs_1 = require("fs");
 var ts_md5_1 = require("ts-md5");
 var cookie = '', res = '', UserName, index, UA = '';
 var shareCodesSelf = [], shareCodes = [], shareCodesHW = [];
 !(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var cookiesArr, except, i, strUserPin, dwHelpedTimes, i, j, i, strUserPin, dwHelpedTimes, _i, _a, t;
+    var except, cookiesArr, i, strUserPin, dwHelpedTimes, i, j, i, strUserPin, dwHelpedTimes, _i, _a, t;
     var _b;
     return __generator(this, function (_c) {
         switch (_c.label) {
-            case 0: return [4 /*yield*/, (0, TS_USER_AGENTS_1.requireConfig)()];
+            case 0:
+                try {
+                    (0, fs_1.accessSync)('./utils/exceptCookie.json');
+                    except = JSON.parse((0, fs_1.readFileSync)('./utils/exceptCookie.json').toString())[path.basename(__filename)];
+                }
+                catch (e) {
+                    except = [];
+                }
+                return [4 /*yield*/, (0, TS_USER_AGENTS_1.requireConfig)()];
             case 1:
                 cookiesArr = _c.sent();
-                except = (0, TS_USER_AGENTS_1.exceptCookie)(path.basename(__filename));
                 i = 0;
                 _c.label = 2;
             case 2:
@@ -106,7 +114,7 @@ var shareCodesSelf = [], shareCodes = [], shareCodesHW = [];
                 i = 0;
                 _c.label = 10;
             case 10:
-                if (!(i < cookiesArr.length)) return [3 /*break*/, 25];
+                if (!(i < cookiesArr.length)) return [3 /*break*/, 19];
                 cookie = cookiesArr[i];
                 UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)[1]);
                 return [4 /*yield*/, getCodesHW()];
@@ -125,65 +133,59 @@ var shareCodesSelf = [], shareCodes = [], shareCodesHW = [];
                 j = 0;
                 _c.label = 14;
             case 14:
-                if (!(j < shareCodes.length)) return [3 /*break*/, 24];
+                if (!(j < shareCodes.length)) return [3 /*break*/, 18];
                 console.log("\u8D26\u53F7" + (i + 1) + " " + UserName + " \u53BB\u52A9\u529B " + shareCodes[j]);
                 return [4 /*yield*/, api('EnrollFriend', 'activeId,channel,joinDate,phoneid,publishFlag,stepreward_jstoken,strPin,timestamp', { joinDate: '20211004', strPin: shareCodes[j] })];
             case 15:
                 res = _c.sent();
-                if (!(res.iRet === 0)) return [3 /*break*/, 16];
-                console.log('成功');
-                return [3 /*break*/, 21];
+                if (res.iRet === 0) {
+                    console.log('成功');
+                }
+                else if (res.iRet === 2015) {
+                    console.log('上限');
+                    return [3 /*break*/, 18];
+                }
+                else if (res.iRet === 2016) {
+                    console.log('火爆');
+                    return [3 /*break*/, 18];
+                }
+                else {
+                    console.log('其他错误:', res);
+                }
+                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(5000)];
             case 16:
-                if (!(res.iRet === 2015)) return [3 /*break*/, 18];
-                console.log('上限');
-                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(1000)];
+                _c.sent();
+                _c.label = 17;
             case 17:
-                _c.sent();
-                return [3 /*break*/, 24];
-            case 18:
-                if (!(res.iRet === 2016)) return [3 /*break*/, 20];
-                console.log('火爆');
-                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(1000)];
-            case 19:
-                _c.sent();
-                return [3 /*break*/, 24];
-            case 20:
-                console.log('其他错误:', res);
-                _c.label = 21;
-            case 21: return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(5000)];
-            case 22:
-                _c.sent();
-                _c.label = 23;
-            case 23:
                 j++;
                 return [3 /*break*/, 14];
-            case 24:
+            case 18:
                 i++;
                 return [3 /*break*/, 10];
-            case 25:
+            case 19:
                 i = 0;
-                _c.label = 26;
-            case 26:
-                if (!(i < cookiesArr.length)) return [3 /*break*/, 35];
+                _c.label = 20;
+            case 20:
+                if (!(i < cookiesArr.length)) return [3 /*break*/, 29];
                 cookie = cookiesArr[i];
                 UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)[1]);
                 index = i + 1;
                 console.log("\n\u5F00\u59CB\u3010\u4EAC\u4E1C\u8D26\u53F7" + index + "\u3011" + UserName + " \u62C6\u7EA2\u5305\n");
                 return [4 /*yield*/, api('GetUserInfo', 'activeId,channel,phoneid,publishFlag,stepreward_jstoken,timestamp,userDraw', { userDraw: 1 })];
-            case 27:
+            case 21:
                 res = _c.sent();
                 strUserPin = res.Data.strUserPin, dwHelpedTimes = res.Data.dwHelpedTimes;
                 return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
-            case 28:
+            case 22:
                 _c.sent();
                 _i = 0, _a = res.Data.gradeConfig;
-                _c.label = 29;
-            case 29:
-                if (!(_i < _a.length)) return [3 /*break*/, 34];
+                _c.label = 23;
+            case 23:
+                if (!(_i < _a.length)) return [3 /*break*/, 28];
                 t = _a[_i];
-                if (!(dwHelpedTimes >= t.dwHelpTimes)) return [3 /*break*/, 32];
+                if (!(dwHelpedTimes >= t.dwHelpTimes)) return [3 /*break*/, 26];
                 return [4 /*yield*/, api('DoGradeDraw', 'activeId,channel,grade,phoneid,publishFlag,stepreward_jstoken,strPin,timestamp', { grade: t.dwGrade, strPin: strUserPin })];
-            case 30:
+            case 24:
                 res = _c.sent();
                 if (res.iRet === 2018)
                     console.log("\u7B49\u7EA7" + t.dwGrade + "\u7EA2\u5305\u5DF2\u6253\u5F00\u8FC7");
@@ -191,20 +193,20 @@ var shareCodesSelf = [], shareCodes = [], shareCodesHW = [];
                     console.log("\u7B49\u7EA7" + t.dwGrade + "\u7EA2\u5305\u6253\u5F00\u6210\u529F");
                 else {
                     console.log('其他错误', (_b = res.sErrMsg) !== null && _b !== void 0 ? _b : JSON.stringify(res));
-                    return [3 /*break*/, 34];
+                    return [3 /*break*/, 28];
                 }
                 return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(15000)];
-            case 31:
+            case 25:
                 _c.sent();
-                return [3 /*break*/, 33];
-            case 32: return [3 /*break*/, 34];
-            case 33:
+                return [3 /*break*/, 27];
+            case 26: return [3 /*break*/, 28];
+            case 27:
                 _i++;
-                return [3 /*break*/, 29];
-            case 34:
+                return [3 /*break*/, 23];
+            case 28:
                 i++;
-                return [3 /*break*/, 26];
-            case 35: return [2 /*return*/];
+                return [3 /*break*/, 20];
+            case 29: return [2 /*return*/];
         }
     });
 }); })();
@@ -255,10 +257,11 @@ function getCodesHW() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios_1["default"].get('${$.isNode() ? require('. / USER_AGENTS, ').hwApi : ', https, //api.jdsharecode.xyz/api/'}HW_CODES', {timeout: 10000})
-                        console.log('获取HW_CODES成功(api)'), shareCodesHW = data['88hb'])];
+                    return [4 /*yield*/, axios_1["default"].get(require('./USER_AGENTS').hwApi + "HW_CODES", { timeout: 10000 })];
                 case 1:
                     data = (_a.sent()).data;
+                    console.log('获取HW_CODES成功(api)');
+                    shareCodesHW = data['88hb'];
                     return [3 /*break*/, 3];
                 case 2:
                     e_2 = _a.sent();
@@ -276,10 +279,9 @@ function getCodesPool() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios_1["default"].get('${$.isNode() ? require('. / USER_AGENTS, ').hwApi : ', https)]; //api.jdsharecode.xyz/api/'}hb88/30', {timeout: 10000})
+                    return [4 /*yield*/, axios_1["default"].get(require('./USER_AGENTS').hwApi + "hb88/30", { timeout: 10000 })];
                 case 1:
-                    data = (_a.sent()) //api.jdsharecode.xyz/api/'}hb88/30', {timeout: 10000})
-                    .data;
+                    data = (_a.sent()).data;
                     return [2 /*return*/, data.data];
                 case 2:
                     e_3 = _a.sent();
@@ -306,7 +308,7 @@ function makeShareCodes(code) {
                     _a.label = 3;
                 case 3:
                     _a.trys.push([3, 5, , 6]);
-                    return [4 /*yield*/, axios_1["default"].get(($.isNode() ? require('./USER_AGENTS').hwApi : 'https://api.jdsharecode.xyz/api/') + "autoInsert/hb88?sharecode=" + code + "&bean=" + bean + "&farm=" + farm + "&pin=" + pin, { timeout: 10000 })];
+                    return [4 /*yield*/, axios_1["default"].get(require('./USER_AGENTS').hwApi + "autoInsert/hb88?sharecode=" + code + "&bean=" + bean + "&farm=" + farm + "&pin=" + pin, { timeout: 10000 })];
                 case 4:
                     data = (_a.sent()).data;
                     if (data.code === 200)

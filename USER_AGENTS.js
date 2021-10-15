@@ -48,12 +48,11 @@ function randomNumber(min = 0, max = 100) {
 
 const USER_AGENT = USER_AGENTS[randomNumber(0, USER_AGENTS.length)];
 
-const apiPool = [
+const hwApiPool = [
   'http://146.56.110.223:10001/api/',
-  'https://api.jdsharecode.xyz/api/',
+  'https://api.jdsharecode.xyz/api/'
 ]
-const hwApi = apiPool[randomNumber(0, apiPool.length)];
-
+const hwApi = hwApiPool[randomNumber(0, hwApiPool.length)];
 module.exports = {
   USER_AGENT,
   hwApi

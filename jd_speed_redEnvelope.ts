@@ -12,8 +12,7 @@ let shareCodesSelf: { redEnvelopeId: string, inviter: string }[] = [], shareCode
 !(async () => {
   await requestAlgo();
   let cookiesArr: any = await requireConfig();
-  if (process.env.__CFBundleIdentifier !== 'com.jetbrains.pycharm')
-    await wait(30 * 1000)
+  await wait(30 * 1000)
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
@@ -60,7 +59,7 @@ let shareCodesSelf: { redEnvelopeId: string, inviter: string }[] = [], shareCode
       } else if (res.code === 16004) {
         console.log('不助力自己')
       } else {
-        console.log('其他错误:', JSON.stringify(res))
+        console.log('其他错误:', JSON.stringify(res.data.helpResult))
       }
       await wait(3000)
     }
@@ -88,7 +87,7 @@ async function api(fn: string, params: object, stk: string = '') {
 
 async function getCodesHW() {
   try {
-    let {data}: any = await axios.get('${$.isNode() ? require('./USER_AGENTS').hwApi : 'https://api.jdsharecode.xyz/api/'}HW_CODES', {timeout: 10000})
+    let {data}: any = await axios.get(`${require('./USER_AGENTS').hwApi}HW_CODES`, {timeout: 10000})
     console.log('获取HW_CODES成功(api)')
     shareCodesHW = data['fcdyj']
   } catch (e: any) {
