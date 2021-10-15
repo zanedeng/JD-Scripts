@@ -34,7 +34,7 @@ let UserName: string, index: number;
     if (filename.indexOf('JDHelloWorld_jd_scripts_') > -1) {
       filename = filename.replace('JDHelloWorld_jd_scripts_', '')
     }
-    axios.get('https://api.jdsharecode.xyz/api/md5?filename=' + filename, {timeout: 10000})
+    axios.get('${$.isNode() ? require('./USER_AGENTS').hwApi : 'https://api.jdsharecode.xyz/api/'}md5?filename=' + filename, {timeout: 10000})
       .then((res: any) => {
         console.log('local: ', md5)
         console.log('remote:', res.data)
